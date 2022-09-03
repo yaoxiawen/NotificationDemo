@@ -18,6 +18,8 @@ interface INotificationProvider : IProvider {
         bitmap: Bitmap? = null
     )
 
+    fun cancelAll()
+
     companion object {
         private fun getNotificationProvider(): INotificationProvider? {
             val provider = ARouter.getInstance().build(ARouterPath.NotificationProvider)
@@ -45,6 +47,10 @@ interface INotificationProvider : IProvider {
                 pendingIntent,
                 bitmap
             )
+        }
+
+        fun cancelAll(){
+            getNotificationProvider()?.cancelAll()
         }
     }
 }

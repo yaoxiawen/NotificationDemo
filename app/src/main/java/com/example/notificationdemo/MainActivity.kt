@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity() {
                 System.currentTimeMillis() + 2 * 60 * 1000
             )
         }
+
+        binding.btnCancel.setOnClickListener {
+            INotificationProvider.cancelAll()
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {

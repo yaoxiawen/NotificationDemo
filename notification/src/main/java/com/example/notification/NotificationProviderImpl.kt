@@ -136,4 +136,8 @@ class NotificationProviderImpl : INotificationProvider {
         //id自增
         notifyId++
     }
+
+    override fun cancelAll() {
+        manager.cancelAll()
+    }
 }
