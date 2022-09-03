@@ -1,5 +1,6 @@
 package com.example.notificationdemo
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -46,5 +47,15 @@ class MainActivity : AppCompatActivity() {
                 System.currentTimeMillis() + 2 * 60 * 1000
             )
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //解析intent附带参数
     }
 }
