@@ -4,12 +4,14 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.NotificationManagerCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.base.ARouterPath
 import com.example.base.INotificationProvider
 import com.example.notification.ReminderWorkerManager
 import com.example.notificationdemo.databinding.ActivityMainBinding
+import com.lollypop.android.tool.jumpToNotificationSetting
 
 @Route(path = ARouterPath.MainActivity)
 class MainActivity : AppCompatActivity() {
@@ -27,14 +29,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btn.setOnClickListener {
-            //由于Android12及更高版本的限制，当用户点按通知或通知中的操作按钮时，您的应用无法在服务或广播接收器内调用 startActivity()。
-            //can't start activities from services or broadcast receivers that are used as notification trampolines
-            //所以使用PendingIntent.getActivity来产生可以跳转页面的 PendingIntent
-            val pending = INotificationProvider.generateDefaultActivityPendingIntent {
-                "//route${ARouterPath.SecondActivity}"
+            if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                //由于Android12及更高版本的限制，当用户点按通知或通知中的操作按钮时，您的应用无法在服务或广播接收器内调用 startActivity()。
+                //can't start activities from services or broadcast receivers that are used as notification trampolines
+                //所以使用PendingIntent.getActivity来产生可以跳转页面的 PendingIntent
+                val pending = INotificationProvider.generateDefaultActivityPendingIntent {
+                    "//route${ARouterPath.SecondActivity}"
+                }
+                val bitmap = BitmapFactory.decodeResource(resources, R.drawable.cat)
+                INotificationProvider.configNotificationAndSend("通知title", "这是内容", pending, bitmap)
+            } else {
+                this.jumpToNotificationSetting()
             }
-            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.cat)
-            INotificationProvider.configNotificationAndSend("通知title", "这是内容", pending, bitmap)
         }
 
         binding.btnDelay.setOnClickListener {
