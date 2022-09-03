@@ -86,7 +86,7 @@ class NotificationProviderImpl : INotificationProvider {
             context,
             notifyId,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
     }
 
@@ -100,7 +100,7 @@ class NotificationProviderImpl : INotificationProvider {
             for (key in names) {
                 intent.putExtra(key, uri.getQueryParameter(key))
             }
-            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
         }
         return null
     }
